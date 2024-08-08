@@ -9,14 +9,6 @@
   </p>
 </div>
 
-## Dependencies
-- [Golang1.22](https://github.com/golang/go)
-- [Gin](https://github.com/gin-gonic/gin)
-- [Gorm](https://github.com/jinzhu/gorm)
-- [Viper](https://github.com/spf13/viper)
-- [Zap](https://github.com/uber-go/zap)
-- [Redis](https://github.com/go-redis/redis)
-
 ```text
 .
 ├── bootstrap                     启动程序所需要的初始化逻辑
@@ -45,6 +37,15 @@
     ├── service                   业务逻辑层
     └── web                       Http相关代码
 ```
+
+
+## Dependencies
+- [Golang1.22](https://github.com/golang/go)
+- [Gin](https://github.com/gin-gonic/gin)
+- [Gorm](https://github.com/jinzhu/gorm)
+- [Viper](https://github.com/spf13/viper)
+- [Zap](https://github.com/uber-go/zap)
+- [Redis](https://github.com/go-redis/redis)
 
 ## Getting Started
 使用 go-zzz 快速构建一个新项目:
