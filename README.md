@@ -2,7 +2,7 @@
   <h3 align="center">go-zzz</h3>
 
   <p align="center">
-    基于Gin和DDD领域模型思想,搭配 <a href="https://github.com/google/wire">wire</a> 依赖注入模式可写出更简洁和安全的代码。
+    基于Gin开发,搭配 <a href="https://github.com/google/wire">wire</a> 依赖注入模式可写出更简洁和安全的代码。
     <br />
     <a href="https://github.com/chongyanovo/go-zzz"><strong>Explore »</strong></a>
     <br />
