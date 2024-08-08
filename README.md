@@ -17,6 +17,35 @@
 - [Zap](https://github.com/uber-go/zap)
 - [Redis](https://github.com/go-redis/redis)
 
+```text
+.
+├── bootstrap                     启动程序所需要的初始化逻辑
+│   ├── app.go
+│   ├── internal                  内部包
+│   │   ├── config.go
+│   │   ├── file_rotatelogs.go
+│   │   ├── mysql.go
+│   │   ├── redis.go
+│   │   ├── server.go
+│   │   ├── viper.go
+│   │   └── zap.go
+│   └── wire                      Wire库相关代码
+│       ├── provider.go
+│       ├── wire.go
+│       └── wire_gen.go
+├── cmd                           服务启动入口
+│   └── main.go
+├── config                        配置文件
+│   └── config.toml
+├── go.mod
+├── go.sum
+└─── internal                     项目内部包
+    ├── domain                    领域模型
+    ├── repository                数据访问层
+    ├── service                   业务逻辑层
+    └── web                       Http相关代码
+```
+
 ## Getting Started
 使用 go-zzz 快速构建一个新项目:
 ```bash
@@ -35,3 +64,5 @@ go mod tidy
 - [ ] 短信验证服务模块开发
 - [ ] 集成 Kafka
 - [ ] 集成 swagger
+
+
