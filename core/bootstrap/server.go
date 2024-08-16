@@ -1,4 +1,4 @@
-package internal
+package bootstrap
 
 import "github.com/gin-gonic/gin"
 

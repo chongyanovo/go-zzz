@@ -1,4 +1,4 @@
-package internal
+package bootstrap
 
 import (
 	"github.com/redis/go-redis/v9"

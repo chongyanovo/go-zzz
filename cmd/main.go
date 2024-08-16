@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/chongyanovo/go-zzz/bootstrap/wire"
+	"github.com/chongyanovo/go-zzz/wire"
 )
 
 func main() {

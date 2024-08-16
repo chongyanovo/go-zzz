@@ -1,7 +1,7 @@
-package bootstrap
+package core
 
 import (
-	"github.com/chongyanovo/go-zzz/bootstrap/internal"
+	"github.com/chongyanovo/go-zzz/core/bootstrap"
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
 	"github.com/spf13/viper"
@@ -10,7 +10,7 @@ import (
 )
 
 type Application struct {
-	Config *internal.Config
+	Config *bootstrap.Config
 	Viper  *viper.Viper
 	DB     *gorm.DB
 	Redis  redis.Cmdable
@@ -19,7 +19,7 @@ type Application struct {
 }
 
 // NewApplication 初始化 Application
-func NewApplication(config *internal.Config,
+func NewApplication(config *bootstrap.Config,
 	viper *viper.Viper,
 	db *gorm.DB,
 	redis redis.Cmdable,
