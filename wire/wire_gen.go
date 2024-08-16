@@ -9,6 +9,7 @@ package wire
 import (
 	"github.com/chongyanovo/go-zzz/core"
 	"github.com/chongyanovo/go-zzz/core/bootstrap"
+	"github.com/chongyanovo/go-zzz/core/logger"
 )
 
 // Injectors from wire.go:
@@ -18,8 +19,9 @@ func InitApp() (core.Application, error) {
 	config := bootstrap.NewConfig(viper)
 	db := bootstrap.NewMysql(config)
 	cmdable := bootstrap.NewRedis(config)
-	logger := bootstrap.NewZap(config)
+	zapLogger := bootstrap.NewZap(config)
+	loggerLogger := logger.NewZapLogger(zapLogger)
 	engine := bootstrap.NewServer(config)
-	application := core.NewApplication(config, viper, db, cmdable, logger, engine)
+	application := core.NewApplication(config, viper, db, cmdable, loggerLogger, engine)
 	return application, nil
 }
