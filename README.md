@@ -61,6 +61,9 @@ go mod tidy
 ```
 
 ## Todo
+- [x] 集成 gorm
+- [x] 日志接口并集成 gorm
+- [ ] 集成 JWT
 - [ ] 基础用户模块实现
 - [ ] 短信验证服务模块开发
 - [ ] 集成 Kafka

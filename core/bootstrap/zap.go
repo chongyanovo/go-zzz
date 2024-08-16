@@ -2,11 +2,25 @@ package bootstrap
 
 import (
 	"fmt"
+	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"os"
+	"path"
 	"strings"
 	"time"
 )
+
+// NewZap 创建Zap实例
+func NewZap(config *Config) *zap.Logger {
+	z := config.ZapConfig
+	cores := z.getZapCores()                    // 获取 zap 核心切片
+	logger := zap.New(zapcore.NewTee(cores...)) // 初始化 zap.Logger
+	if z.ShowLine {                             // 判断是否显示行
+		logger = logger.WithOptions(zap.AddCaller())
+	}
+	return logger
+}
 
 // ZapConfig 配置
 type ZapConfig struct {
@@ -144,13 +158,20 @@ func (z *ZapConfig) getZapCores() []zapcore.Core {
 	return cores
 }
 
-// NewZap NewZap
-func NewZap(config *Config) *zap.Logger {
-	z := config.ZapConfig
-	cores := z.getZapCores()                    // 获取 zap 核心切片
-	logger := zap.New(zapcore.NewTee(cores...)) // 初始化 zap.Logger
-	if z.ShowLine {                             // 判断是否显示行
-		logger = logger.WithOptions(zap.AddCaller())
+var FileRotateLogs = new(fileRotateLogs)
+
+type fileRotateLogs struct{}
+
+// GetWriteSyncer 获取 zapcore.WriteSyncer
+func (r *fileRotateLogs) GetWriteSyncer(z *ZapConfig, level string) (zapcore.WriteSyncer, error) {
+	fileWriter, err := rotatelogs.New(
+		path.Join(z.Director, "%Y-%m-%d", level+".log"),
+		rotatelogs.WithClock(rotatelogs.Local),
+		rotatelogs.WithMaxAge(time.Duration(z.MaxAge)*24*time.Hour), // 日志留存时间
+		rotatelogs.WithRotationTime(time.Hour*24),
+	)
+	if z.LogInConsole {
+		return zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(fileWriter)), err
 	}
-	return logger
+	return zapcore.AddSync(fileWriter), err
 }

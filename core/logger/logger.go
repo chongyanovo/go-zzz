@@ -21,6 +21,8 @@ func NewLogField(key string, value any) LogField {
 	}
 }
 
+// ToDo 后续需要用到的时候再加
+
 func String(key string, value string) LogField {
 	return NewLogField(key, value)
 }
