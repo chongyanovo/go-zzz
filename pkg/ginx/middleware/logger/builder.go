@@ -13,6 +13,8 @@ import (
 type MiddleWareBuilder struct {
 	allowRequestBody  *atomic.Bool
 	allowResponseBody *atomic.Bool
+	urlMaxLength      *atomic.Int32
+	bodyMaxLength     *atomic.Int32
 	loggerFunc        func(ctx context.Context, log *AccessLog)
 }
 
@@ -21,6 +23,8 @@ func NewBuilder(loggerFunc func(ctx context.Context, log *AccessLog)) *MiddleWar
 	return &MiddleWareBuilder{
 		allowRequestBody:  atomic.NewBool(false),
 		allowResponseBody: atomic.NewBool(false),
+		urlMaxLength:      atomic.NewInt32(1024),
+		bodyMaxLength:     atomic.NewInt32(1024),
 		loggerFunc:        loggerFunc,
 	}
 }
@@ -37,13 +41,26 @@ func (b *MiddleWareBuilder) AllowResponseBody(flag bool) *MiddleWareBuilder {
 	return b
 }
 
+// UrlLength 设置url最大长度
+func (b *MiddleWareBuilder) UrlLength(length int) *MiddleWareBuilder {
+	b.urlMaxLength.Store(int32(length))
+	return b
+}
+
+// BodyLength 设置请求体最大长度
+func (b *MiddleWareBuilder) BodyLength(length int) *MiddleWareBuilder {
+	b.bodyMaxLength.Store(int32(length))
+	return b
+}
+
 // Build 构建中间件
 func (b *MiddleWareBuilder) Build() gin.HandlerFunc {
 	start := time.Now()
 	return func(ctx *gin.Context) {
 		url := ctx.Request.URL.String()
-		if len(url) > 1024 {
-			url = url[:1024] + "..."
+		urlMaxLength := int(b.urlMaxLength.Load())
+		if len(url) > urlMaxLength {
+			url = url[:urlMaxLength] + "..."
 		}
 		log := AccessLog{
 			Method: ctx.Request.Method,
@@ -52,8 +69,9 @@ func (b *MiddleWareBuilder) Build() gin.HandlerFunc {
 		if b.allowRequestBody.Load() && ctx.Request.Body != nil {
 			body, _ := ctx.GetRawData()
 			ctx.Request.Body = io.NopCloser(bytes.NewReader(body))
-			if len(body) > 1024 {
-				body = body[:1024]
+			bodyMaxLength := int(b.bodyMaxLength.Load())
+			if len(body) > bodyMaxLength {
+				body = body[:bodyMaxLength]
 			}
 			log.RequestBody = string(body)
 		}
@@ -62,6 +80,7 @@ func (b *MiddleWareBuilder) Build() gin.HandlerFunc {
 			ctx.Writer = &responseWriter{
 				ResponseWriter: ctx.Writer,
 				log:            &log,
+				bodyMaxLength:  atomic.NewInt32(1024),
 			}
 		}
 		log.Duration = time.Since(start).String()
@@ -69,7 +88,6 @@ func (b *MiddleWareBuilder) Build() gin.HandlerFunc {
 			b.loggerFunc(ctx, &log)
 		}()
 		ctx.Next()
-
 	}
 }
 
@@ -77,16 +95,25 @@ func (b *MiddleWareBuilder) Build() gin.HandlerFunc {
 type responseWriter struct {
 	log *AccessLog
 	gin.ResponseWriter
+	bodyMaxLength *atomic.Int32
 }
 
 // Write 获取响应体
 func (w *responseWriter) Write(data []byte) (int, error) {
+	bodyMaxLength := int(w.bodyMaxLength.Load())
+	if len(data) > bodyMaxLength {
+		data = data[:bodyMaxLength]
+	}
 	w.log.ResponseBody = string(data)
 	return w.ResponseWriter.Write(data)
 }
 
 // WriteString 获取响应体
 func (w *responseWriter) WriteString(data string) (n int, err error) {
+	bodyMaxLength := int(w.bodyMaxLength.Load())
+	if len(data) > bodyMaxLength {
+		data = data[:bodyMaxLength]
+	}
 	w.log.ResponseBody = data
 	return w.ResponseWriter.WriteString(data)
 }
