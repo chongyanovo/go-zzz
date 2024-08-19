@@ -4,33 +4,36 @@ import (
 	"bytes"
 	"context"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/atomic"
 	"io"
 	"time"
 )
 
 // MiddleWareBuilder 日志打印中间件
 type MiddleWareBuilder struct {
-	allowRequestBody  bool
-	allowResponseBody bool
+	allowRequestBody  *atomic.Bool
+	allowResponseBody *atomic.Bool
 	loggerFunc        func(ctx context.Context, log *AccessLog)
 }
 
 // NewBuilder 创建日志打印中间件构造器
 func NewBuilder(loggerFunc func(ctx context.Context, log *AccessLog)) *MiddleWareBuilder {
 	return &MiddleWareBuilder{
-		loggerFunc: loggerFunc,
+		allowRequestBody:  atomic.NewBool(false),
+		allowResponseBody: atomic.NewBool(false),
+		loggerFunc:        loggerFunc,
 	}
 }
 
 // AllowRequestBody 允许打印请求体
 func (b *MiddleWareBuilder) AllowRequestBody() *MiddleWareBuilder {
-	b.allowRequestBody = true
+	b.allowRequestBody.Store(true)
 	return b
 }
 
 // AllowResponseBody 允许打印响应体
 func (b *MiddleWareBuilder) AllowResponseBody() *MiddleWareBuilder {
-	b.allowResponseBody = true
+	b.allowResponseBody.Store(true)
 	return b
 }
 
