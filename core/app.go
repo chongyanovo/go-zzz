@@ -2,10 +2,10 @@ package core
 
 import (
 	"github.com/chongyanovo/go-zzz/core/bootstrap"
-	"github.com/chongyanovo/go-zzz/core/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
@@ -14,7 +14,7 @@ type Application struct {
 	Viper  *viper.Viper
 	DB     *gorm.DB
 	Redis  redis.Cmdable
-	Logger logger.Logger
+	Logger *zap.Logger
 	Server *gin.Engine
 }
 
@@ -23,7 +23,7 @@ func NewApplication(config *bootstrap.Config,
 	viper *viper.Viper,
 	db *gorm.DB,
 	redis redis.Cmdable,
-	logger logger.Logger,
+	logger *zap.Logger,
 	server *gin.Engine) Application {
 	return Application{
 		Config: config,

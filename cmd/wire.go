@@ -1,9 +1,9 @@
-package wire
+//go:build wireinject
+
+package main
 
 import (
 	"github.com/chongyanovo/go-zzz/core"
-	"github.com/chongyanovo/go-zzz/core/bootstrap"
-	"github.com/chongyanovo/go-zzz/core/logger"
 	"github.com/google/wire"
 )
 
@@ -13,10 +13,17 @@ var BaseProvider = wire.NewSet(
 	bootstrap.NewMysql,
 	bootstrap.NewRedis,
 	bootstrap.NewZap,
-	logger.NewZapLogger,
 	core.NewApplication,
 )
 
 var WebProvider = wire.NewSet(
 	bootstrap.NewServer,
 )
+
+func InitApp() (core.Application, error) {
+	wire.Build(
+		BaseProvider,
+		WebProvider,
+	)
+	return core.Application{}, nil
+}

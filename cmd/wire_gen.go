@@ -4,7 +4,7 @@
 //go:build !wireinject
 // +build !wireinject
 
-package wire
+package main
 
 import (
 	"github.com/chongyanovo/go-zzz/core"

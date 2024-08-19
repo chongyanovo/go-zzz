@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/chongyanovo/go-zzz/wire"
 )
 
 func main() {
-	app, err := wire.InitApp()
+	app, err := InitApp()
 	if err != nil {
 		fmt.Println("初始化失败")
 		panic(err)
