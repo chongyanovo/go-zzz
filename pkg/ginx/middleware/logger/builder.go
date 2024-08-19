@@ -26,14 +26,14 @@ func NewBuilder(loggerFunc func(ctx context.Context, log *AccessLog)) *MiddleWar
 }
 
 // AllowRequestBody 允许打印请求体
-func (b *MiddleWareBuilder) AllowRequestBody() *MiddleWareBuilder {
-	b.allowRequestBody.Store(true)
+func (b *MiddleWareBuilder) AllowRequestBody(flag bool) *MiddleWareBuilder {
+	b.allowRequestBody.Store(flag)
 	return b
 }
 
 // AllowResponseBody 允许打印响应体
-func (b *MiddleWareBuilder) AllowResponseBody() *MiddleWareBuilder {
-	b.allowResponseBody.Store(true)
+func (b *MiddleWareBuilder) AllowResponseBody(flag bool) *MiddleWareBuilder {
+	b.allowResponseBody.Store(flag)
 	return b
 }
 

@@ -19,8 +19,8 @@ func main() {
 		NewBuilder(func(ctx context.Context, log *logger.AccessLog) {
 			app.Logger.Info("Http请求", zap.Any("日志", log))
 		}).
-		AllowRequestBody().
-		AllowResponseBody().
+		AllowRequestBody(true).
+		AllowResponseBody(true).
 		Build())
 
 	ug := engine.Group("/user")
