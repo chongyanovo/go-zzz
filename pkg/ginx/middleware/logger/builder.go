@@ -49,7 +49,7 @@ func (b *MiddleWareBuilder) Build() gin.HandlerFunc {
 			Method: ctx.Request.Method,
 			Url:    url,
 		}
-		if b.allowRequestBody && ctx.Request.Body != nil {
+		if b.allowRequestBody.Load() && ctx.Request.Body != nil {
 			body, _ := ctx.GetRawData()
 			ctx.Request.Body = io.NopCloser(bytes.NewReader(body))
 			if len(body) > 1024 {
@@ -58,7 +58,7 @@ func (b *MiddleWareBuilder) Build() gin.HandlerFunc {
 			log.RequestBody = string(body)
 		}
 
-		if b.allowResponseBody {
+		if b.allowResponseBody.Load() {
 			ctx.Writer = &responseWriter{
 				ResponseWriter: ctx.Writer,
 				log:            &log,
