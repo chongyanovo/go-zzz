@@ -10,32 +10,48 @@
 </div>
 
 ```text
-.
-├── bootstrap                     启动程序所需要的初始化逻辑
-│   ├── app.go
-│   ├── internal                  内部包
-│   │   ├── config.go
-│   │   ├── file_rotatelogs.go
-│   │   ├── mysql.go
-│   │   ├── redis.go
-│   │   ├── server.go
-│   │   ├── viper.go
-│   │   └── zap.go
-│   └── wire                      Wire库相关代码
-│       ├── provider.go
-│       ├── wire.go
-│       └── wire_gen.go
-├── cmd                           服务启动入口
-│   └── main.go
-├── config                        配置文件
-│   └── config.toml
-├── go.mod
-├── go.sum
-└─── internal                     项目内部包
-    ├── domain                    领域模型
-    ├── repository                数据访问层
-    ├── service                   业务逻辑层
-    └── web                       Http相关代码
+├─cmd/
+│ ├─main.go------------- # 服务启动入口
+│ ├─wire_gen.go--------- # Wire生成代码
+│ └─wire.go------------- # Wire相关代码
+├─config/
+│ └─config.toml--------- # 配置文件
+├─core/
+│ ├─bootstrap/---------- # 启动程序所需要的初始化逻辑
+│ │ ├─config.go--------- # 配置
+│ │ ├─middleware.go----- # 中间件
+│ │ ├─mysql.go---------- # mysql
+│ │ ├─redis.go---------- # redis
+│ │ ├─server.go--------- # gin服务端
+│ │ ├─viper.go---------- # viper
+│ │ ├─websocket.go------ # websocket
+│ │ └─zap.go------------ # zap日志
+│ └─app.go
+├─internal/------------- # 内部包
+│ ├─domain/------------- # 领域模型
+│ │ └─user.go
+│ ├─handler/------------ # 控制层
+│ │ ├─user.go
+│ │ └─websocket.go
+│ ├─repository/--------- # 数据访问层
+│ │ ├─dao/
+│ │ │ └─user.go
+│ │ └─user.go
+│ └─service/------------ # 业务逻辑层
+│   └─user.go
+├─pkg/------------------ # 外部包
+│ └─ginx/
+│   ├─middleware/
+│   │ └─logger/
+│   │   └─builder.go
+│   └─websocket/
+│     ├─client.go
+│     └─manager.go
+├─.gitignore
+├─go.mod
+├─go.sum
+├─LICENSE
+└─README.md
 ```
 
 
