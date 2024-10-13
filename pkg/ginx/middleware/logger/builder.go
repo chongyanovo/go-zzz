@@ -5,6 +5,7 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/atomic"
+	"go.uber.org/zap"
 	"io"
 	"time"
 )
@@ -89,6 +90,14 @@ func (b *MiddleWareBuilder) Build() gin.HandlerFunc {
 		}()
 		ctx.Next()
 	}
+}
+
+func Default(l *zap.Logger) gin.HandlerFunc {
+	return NewBuilder(func(ctx context.Context, log *AccessLog) {
+		l.Info("Http请求", zap.Any("日志", log))
+	}).AllowRequestBody(true).
+		AllowResponseBody(true).
+		Build()
 }
 
 // responseWriter 装饰gin.ResponseWriter获取响应体

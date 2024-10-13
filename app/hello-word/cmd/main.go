@@ -15,13 +15,7 @@ func main() {
 	}
 
 	engine := app.Server
-	engine.Use(logger.
-		NewBuilder(func(ctx context.Context, log *logger.AccessLog) {
-			app.Logger.Info("Http请求", zap.Any("日志", log))
-		}).
-		AllowRequestBody(true).
-		AllowResponseBody(true).
-		Build())
+	engine.Use(logger.Default(app.Logger))
 
 	ug := engine.Group("/user")
 	ug.GET("/hello", func(c *gin.Context) {
