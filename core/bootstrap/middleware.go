@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"context"
+	"github.com/chongyanovo/go-zzz/internal/handler/middleware"
 	"github.com/chongyanovo/go-zzz/pkg/ginx/middleware/logger"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -23,6 +24,15 @@ func LoggerMiddleware(l *zap.Logger) gin.HandlerFunc {
 		}).
 		AllowRequestBody(true).
 		AllowResponseBody(true).
+		Build()
+}
+
+// LoginMiddleWare 登录中间件
+func LoginMiddleWare() gin.HandlerFunc {
+	return middleware.NewLoginBuilder().
+		IgnorePaths("/users/login").
+		IgnorePaths("/users/signup").
+		IgnorePaths("/users/login/code").
 		Build()
 }
 

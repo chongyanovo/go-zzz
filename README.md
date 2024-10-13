@@ -30,7 +30,12 @@
 ├─internal/------------- # 内部包
 │ ├─domain/------------- # 领域模型
 │ │ └─user.go
-│ ├─handler/------------ # 控制层
+│ ├─handler/
+│ │ ├─middleware/
+│ │ │ ├─ratelimit/------------ # 限流策略
+│ │ │ │ ├─builder.go
+│ │ │ │ └─slide_window.lua---- # 滑动窗口策略
+│ │ │ └─login.go
 │ │ ├─user.go
 │ │ └─websocket.go
 │ ├─repository/--------- # 数据访问层
@@ -41,6 +46,8 @@
 │   └─user.go
 ├─pkg/------------------ # 外部包
 │ └─ginx/
+│   ├─jwt/
+│   │ └─jwt.go
 │   ├─middleware/
 │   │ └─logger/
 │   │   └─builder.go
@@ -79,7 +86,10 @@ go mod tidy
 ## Todo
 - [x] 集成 gorm
 - [x] 日志接口并集成 gorm
-- [ ] 集成 JWT
+- [x] 集成 WebSocket
+- [x] 集成 JWT
+- [x] 登录 Token 校验
+- [x] 限流策略
 - [ ] 基础用户模块实现
 - [ ] 短信验证服务模块开发
 - [ ] 集成 Kafka
