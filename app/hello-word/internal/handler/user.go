@@ -1,14 +1,14 @@
 package handler
 
 import (
-	"github.com/chongyanovo/go-zzz/core/logger"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"net/http"
 )
 
 type UserHandler struct {
 	//userService UserService
-	l logger.Logger
+	l *zap.Logger
 }
 
 //func NewUserHandler(userService UserService) *UserHandler {
@@ -17,7 +17,7 @@ type UserHandler struct {
 //	}
 //}
 
-func NewUserHandler(l logger.Logger) *UserHandler {
+func NewUserHandler(l *zap.Logger) *UserHandler {
 	return &UserHandler{
 		l: l,
 	}

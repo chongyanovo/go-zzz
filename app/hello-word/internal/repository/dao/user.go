@@ -1,7 +1,7 @@
 package dao
 
 import (
-	"github.com/chongyanovo/go-zzz/core/logger"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
@@ -15,7 +15,7 @@ type UserDao interface {
 
 type UserDaoImpl struct {
 	db     *gorm.DB
-	logger logger.Logger
+	logger *zap.Logger
 }
 
 func NewUserDao(db *gorm.DB) UserDao {
