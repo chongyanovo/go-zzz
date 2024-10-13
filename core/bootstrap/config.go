@@ -7,10 +7,11 @@ import (
 
 // Config 配置文件
 type Config struct {
-	ServerConfig *ServerConfig `mapstructure:"server" json:"server" yaml:"server"`
-	MysqlConfig  *MysqlConfig  `mapstructure:"mysql" json:"mysql" yaml:"mysql"`
-	RedisConfig  *RedisConfig  `mapstructure:"redis" json:"redis" yaml:"redis"`
-	ZapConfig    *ZapConfig    `mapstructure:"zap" json:"zap" yaml:"zap"`
+	ServerConfig    *ServerConfig    `mapstructure:"server" json:"server" yaml:"server"`
+	MysqlConfig     *MysqlConfig     `mapstructure:"mysql" json:"mysql" yaml:"mysql"`
+	RedisConfig     *RedisConfig     `mapstructure:"redis" json:"redis" yaml:"redis"`
+	ZapConfig       *ZapConfig       `mapstructure:"zap" json:"zap" yaml:"zap"`
+	WebSocketConfig *WebSocketConfig `mapstructure:"websocket" json:"websocket" yaml:"websocket"`
 }
 
 // NewConfig 读取配置文件

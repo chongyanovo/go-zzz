@@ -8,7 +8,7 @@ config = "charset=utf8mb4&parseTime=True&loc=Local"
 port = 13306
 username = "root"
 password = "123456"
-database = "go-zzz-db"
+database = "go_zzz_db"
 
 [redis]
 host = "127.0.0.1"
@@ -23,5 +23,8 @@ format = "console"
 director = "logs"
 encode-level = "LowercaseColorLevelEncoder"
 stacktrace-key = "stacktrace"
-show-line = true
+show-LINE = true
 log-in-console = true
+
+[websocket]
+biz = ["monitor", "chat"]

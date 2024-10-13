@@ -1,6 +1,9 @@
 package bootstrap
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/chongyanovo/go-zzz/internal/handler"
+	"github.com/gin-gonic/gin"
+)
 
 // ServerConfig server配置
 type ServerConfig struct {
@@ -8,7 +11,10 @@ type ServerConfig struct {
 	Port int    `mapstructure:"port" json:"port" yaml:"port"`
 }
 
-func NewServer() *gin.Engine {
+func NewServer(middlewares []gin.HandlerFunc, uh *handler.UserHandler, wh *handler.WebSocketHandler) *gin.Engine {
 	server := gin.Default()
+	server.Use(middlewares...)
+	uh.RegisterRoutes(server)
+	wh.RegisterRoutes(server)
 	return server
 }
